@@ -9,5 +9,7 @@ namespace Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Models
         int Id { get; set; }
         string Title { get; set; }
         string Text { get; set; }
+
+        int CategoryId { get; set; }
     }
 }
