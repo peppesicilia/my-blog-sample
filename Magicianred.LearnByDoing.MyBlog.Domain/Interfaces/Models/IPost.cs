@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Models
 {
-    public interface IPost
+    public interface ICategory
     {
         int Id { get; set; }
         string Title { get; set; }

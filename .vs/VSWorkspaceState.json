@@ -1,0 +1,13 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Magicianred.LearnByDoing.MyBlog.Domain",
+    "\\Magicianred.LearnByDoing.MyBlog.Domain\\Interfaces\\Models",
+    "\\Magicianred.LearnByDoing.MyBlog.Domain\\Interfaces\\Repositories",
+    "\\Magicianred.LearnByDoing.MyBlog.Domain\\Models",
+    "\\Magicianred.LearnByDoing.MyBlog.Web",
+    "\\Magicianred.LearnByDoing.MyBlog.Web\\Views",
+    "\\Magicianred.LearnByDoing.MyBlog.Web\\Views\\Home"
+  ],
+  "PreviewInSolutionExplorer": false
+}

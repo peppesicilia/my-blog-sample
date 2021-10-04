@@ -31,7 +31,7 @@ namespace Magicianred.LearnByDoing.MyBlog.Web
         {
             services.AddControllersWithViews();
 
-            services.AddScoped<IPost, Post>();
+            services.AddScoped<ICategory, Post>();
             services.AddScoped<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
             services.AddScoped<IPostsRepository, PostsRepository>();
             services.AddScoped<IPostsService, PostsService>();

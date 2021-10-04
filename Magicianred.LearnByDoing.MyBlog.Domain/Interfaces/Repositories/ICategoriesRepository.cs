@@ -7,7 +7,7 @@ namespace Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Repositories
 {
     public interface ICategoriesRepository
     {
-        public IEnumerable<Post> GetAll();
-        Categories GetById(int id);
+        public IEnumerable<Category> GetAll();
+        public Category GetById(int id);
     }
 }

@@ -26,7 +26,7 @@ namespace Magicianred.LearnByDoing.MyBlog.WebApi.Tests.Integration.Helpers
                         webHost.UseTestServer();
                         webHost.ConfigureServices((hostContext, services) =>
                         {
-                            services.AddScoped<IPost, Post>();
+                            services.AddScoped<ICategory, Post>();
                             services.AddScoped<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
                             services.AddScoped<IPostsRepository, PostsRepository>();
                             services.AddScoped<IPostsService, PostsService>();
