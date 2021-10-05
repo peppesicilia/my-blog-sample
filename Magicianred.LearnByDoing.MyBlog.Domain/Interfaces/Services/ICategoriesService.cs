@@ -7,5 +7,7 @@ namespace Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Services
     {
         public List<Category> GetAll();
         public Category GetById(int id);
+
+        public List<Post> GetPostsById(int id);
     }
 }

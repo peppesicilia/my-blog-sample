@@ -19,6 +19,7 @@ namespace Magicianred.LearnByDoing.MyBlog.Web.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IPostsService _postsService;
+        private readonly ICategoriesService _categoriesService;
 
         /// <summary>
         /// Constructor
@@ -80,6 +81,20 @@ namespace Magicianred.LearnByDoing.MyBlog.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        //Categories
+
+        public IActionResult Categories()
+        {
+            var categories = _categoriesService.GetAll();
+            return View(categories);
+        }
+
+        public IActionResult Category(int id)
+        {
+            var category = _categoriesService.GetById(id);
+            return View(category);
         }
     }
 }

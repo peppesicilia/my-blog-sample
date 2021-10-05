@@ -26,7 +26,7 @@ namespace Magicianred.LearnByDoing.MyBlog.WebApi
         {
             services.AddControllers();
 
-            services.AddScoped<ICategory, Post>();
+            services.AddScoped<IPost, Post>();
             services.AddScoped<IDatabaseConnectionFactory, DatabaseConnectionFactory>();
             services.AddScoped<IPostsRepository, PostsRepository>();
             services.AddScoped<IPostsService, PostsService>();

@@ -27,7 +27,7 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
             IEnumerable<Category> categories = null;
             using (var connection = _connectionFactory.GetConnection())
             {
-                categories = connection.Query<Category>("SELECT Id, Name, Description FROM Categories ORDER BY CreateDate DESC");
+                categories = connection.Query<Category>("SELECT Id, Name, Description, CategoryId FROM Categories ORDER BY CreateDate DESC");
             }
             return categories;
         }
@@ -42,6 +42,17 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
                 category = connection.QueryFirstOrDefault<Category>("SELECT * FROM Categories WHERE Id = @CategoryId", new { CategoryId = id });
             }
             return category;
+        }
+
+        public IEnumerable<Post> GetPostsById(int id)
+        {
+            Category category = null;
+            using (var connection = _connectionFactory.GetConnection())
+            {
+                // TOP 1 is not a command for SQLite, remove
+                category = connection.QueryFirstOrDefault<Category>("SELECT * FROM Categories WHERE Id = @CategoryId", new { CategoryId = id });
+            }
+            return category.Posts;
         }
     }
 }
