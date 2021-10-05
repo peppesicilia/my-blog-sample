@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Models
+﻿namespace Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Models
 {
-    public interface ICategory
+    public interface IPost
     {
         int Id { get; set; }
         string Title { get; set; }

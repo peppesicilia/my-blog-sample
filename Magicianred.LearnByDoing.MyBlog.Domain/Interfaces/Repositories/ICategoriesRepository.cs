@@ -1,13 +1,11 @@
 ﻿using Magicianred.LearnByDoing.MyBlog.Domain.Models;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Repositories
 {
     public interface ICategoriesRepository
     {
         public IEnumerable<Category> GetAll();
-        public Category GetById(int id);
+        Category GetById(int id);
     }
 }

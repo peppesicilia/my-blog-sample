@@ -2,7 +2,7 @@
 
 namespace Magicianred.LearnByDoing.MyBlog.Domain.Models
 {
-    public partial class Post : ICategory
+    public partial class Post : IPost
     {
         public int Id { get; set; }
         public string Title { get; set; }
