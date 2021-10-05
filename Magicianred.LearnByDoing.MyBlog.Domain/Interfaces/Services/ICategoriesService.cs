@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 namespace Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Services
 {
-    public interface IPostsService
+    public interface ICategoriesService
     {
-        public List<Post> GetAll();
-        public Post GetById(int id);
+        public List<Category> GetAll();
+        public Category GetById(int id);
     }
 }
