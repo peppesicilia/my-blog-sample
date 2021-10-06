@@ -14,8 +14,12 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Models
     /// Add DateTime CreateDate because of is returned from OrmLite, if not present exception
     /// </summary>
     [Alias("Posts")]
-    public class Post : Magicianred.LearnByDoing.MyBlog.Domain.Models.Post
+    public class Post
     {
-        public DateTime CreateDate { get; set; }
+        public int Id { get; set; }
+        public string Title { get; set; }
+        public string Text { get; set; }
+        public int CategoryId { get; set; }
+        public List<Tag> Tags { get; set; }
     }
 }

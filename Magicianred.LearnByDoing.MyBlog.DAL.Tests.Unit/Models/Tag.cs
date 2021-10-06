@@ -5,8 +5,8 @@ using System.Text;
 
 namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Models
 {
-    [Alias("Categories")]
-    public class Category
+    [Alias("Tags")]
+    public class Tag
     {
         public int Id { get; set; }
         public string Name { get; set; }

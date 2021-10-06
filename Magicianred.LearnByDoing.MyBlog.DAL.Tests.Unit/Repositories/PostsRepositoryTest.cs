@@ -110,7 +110,63 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
 
             // Assert
             Assert.IsNull(post);
+        }
 
+
+        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
+        [Category("Unit test")]
+        public void should_retrieve_all_tags_of_post(int id)
+        {
+            // Arrange
+            var mockPosts = PostsHelper.GetDefaultMockData();
+            var mockTags = TagsHelper.GetDefaultMockData();
+
+            mockPosts = PostsHelper.GetMockDataWithTags(mockTags);
+            mockTags = TagsHelper.GetMockDataWithPosts(mockPosts);
+
+            var db = new InMemoryDatabase();
+
+            db.Insert<Post>(mockPosts);
+            db.Insert<Tag>(mockTags);
+
+            _connectionFactory.GetConnection().Returns(db.OpenConnection());
+
+            var mockCategory = mockCategories.Where(x => x.Id == id).FirstOrDefault();
+            mockCategory.Posts = mockPosts.Where(x => x.CategoryId == id).ToList();
+            var mockPostsById = mockPosts.Where(x => x.CategoryId == id).ToList();
+
+            // Act
+            var category = _sut.GetById(id);
+            // var posts = category.Posts;
+
+            List<Domain.Models.Post> postsList = null;
+            if (category != null && category.Posts != null && category.Posts.Any())
+            {
+                postsList = category.Posts;
+            }
+
+            // Assert
+            Assert.IsNotNull(category);
+            Assert.IsTrue(mockCategory.Id == category.Id);
+            Assert.IsTrue(mockCategory.Name == category.Name);
+            Assert.IsTrue(mockCategory.Description == category.Description);
+            //Assert.IsTrue(mockCategory.Posts.Equals(category.Posts));
+
+            Assert.AreEqual(postsList.Count(), mockPostsById.Count());
+
+            mockPostsById = mockPostsById.OrderBy(o => o.Id).ToList();
+            postsList = postsList.OrderBy(o => o.Id).ToList();
+
+            for (var i = 0; i < mockPostsById.Count(); i++)
+            {
+                var mockPost = mockPostsById.ElementAt(i);
+                var post = postsList[i];
+                Assert.IsTrue(mockPost.Id == post.Id);
+                Assert.IsTrue(mockPost.Title == post.Title);
+                Assert.IsTrue(mockPost.Text == post.Text);
+            }
         }
     }
 }

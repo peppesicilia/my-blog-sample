@@ -1,4 +1,5 @@
 ﻿using Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Models;
+using System.Collections.Generic;
 
 namespace Magicianred.LearnByDoing.MyBlog.Domain.Models
 {
@@ -8,5 +9,6 @@ namespace Magicianred.LearnByDoing.MyBlog.Domain.Models
         public string Title { get; set; }
         public string Text { get; set; }
         public int CategoryId { get; set; }
+        public List<Tag> Tags { get; set; }
     }
 }
