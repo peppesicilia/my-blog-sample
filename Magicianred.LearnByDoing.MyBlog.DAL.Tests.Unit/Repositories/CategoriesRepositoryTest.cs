@@ -70,7 +70,7 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         }
 
         [TestCase(1)]
-        [TestCase(1)]
+        [TestCase(2)]
         [Category("Unit test")]
         public void should_retrieve_category_by_id(int id)
         {

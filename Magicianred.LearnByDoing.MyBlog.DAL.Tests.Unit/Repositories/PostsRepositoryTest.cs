@@ -45,8 +45,13 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         {
             // Arrange
             var mockPosts = PostsHelper.GetDefaultMockData();
+            var mockTags = TagsHelper.GetDefaultMockData();
+            var mockPostTags = PostTagsHelper.GetDefaultMockData();
             var db = new InMemoryDatabase();
+            db.Insert<Tag>(mockTags);
             db.Insert<Post>(mockPosts);
+            db.Insert<PostTag>(mockPostTags);
+
             _connectionFactory.GetConnection().Returns(db.OpenConnection());
 
             // Act
@@ -62,8 +67,8 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
 
             for (var i = 0; i < mockPosts.Count; i++)
             {
-                var mockPost = mockPosts[0];
-                var post = postsList[0];
+                var mockPost = mockPosts[i];
+                var post = postsList[i];
                 Assert.IsTrue(mockPost.Id == post.Id);
                 Assert.IsTrue(mockPost.Title == post.Title);
                 Assert.IsTrue(mockPost.Text == post.Text);
@@ -71,7 +76,8 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         }
 
         [TestCase(1)]
-        [TestCase(1)]
+        [TestCase(2)]
+        [TestCase(3)]
         [Category("Unit test")]
         public void should_retrieve_post_by_id(int id)
         {
@@ -120,52 +126,50 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         public void should_retrieve_all_tags_of_post(int id)
         {
             // Arrange
-            var mockPosts = PostsHelper.GetDefaultMockData();
             var mockTags = TagsHelper.GetDefaultMockData();
-
-            mockPosts = PostsHelper.GetMockDataWithTags(mockTags);
-            mockTags = TagsHelper.GetMockDataWithPosts(mockPosts);
+            var mockPostTags = PostTagsHelper.GetDefaultMockData();
+            //var mockPosts = PostsHelper.GetDefaultMockData();
+            var mockPosts = PostsHelper.GetMockDataWithTags(mockTags);
+            //mockTags = TagsHelper.GetMockDataWithPosts(mockPosts);
 
             var db = new InMemoryDatabase();
 
             db.Insert<Post>(mockPosts);
             db.Insert<Tag>(mockTags);
+            db.Insert<PostTag>(mockPostTags);
 
             _connectionFactory.GetConnection().Returns(db.OpenConnection());
 
-            var mockCategory = mockCategories.Where(x => x.Id == id).FirstOrDefault();
-            mockCategory.Posts = mockPosts.Where(x => x.CategoryId == id).ToList();
-            var mockPostsById = mockPosts.Where(x => x.CategoryId == id).ToList();
+            var mockPost = mockPosts.Where(x => x.Id == id).FirstOrDefault();
 
             // Act
-            var category = _sut.GetById(id);
-            // var posts = category.Posts;
+            var post = _sut.GetById(id);
 
-            List<Domain.Models.Post> postsList = null;
-            if (category != null && category.Posts != null && category.Posts.Any())
+            List<Domain.Models.Tag> tagsList = null;
+            if (post != null && post.Tags != null && post.Tags.Any())
             {
-                postsList = category.Posts;
+                tagsList = post.Tags;
             }
 
             // Assert
-            Assert.IsNotNull(category);
-            Assert.IsTrue(mockCategory.Id == category.Id);
-            Assert.IsTrue(mockCategory.Name == category.Name);
-            Assert.IsTrue(mockCategory.Description == category.Description);
-            //Assert.IsTrue(mockCategory.Posts.Equals(category.Posts));
+            Assert.IsNotNull(post);
+            Assert.IsTrue(mockPost.Id == post.Id);
+            Assert.IsTrue(mockPost.Title == post.Title);
+            Assert.IsTrue(mockPost.Text == post.Text);
+            //Assert.IsTrue(mockPost.Tags.Equals(post.Tags));
 
-            Assert.AreEqual(postsList.Count(), mockPostsById.Count());
+            Assert.AreEqual(tagsList.Count(), mockPost.Tags.Count());
 
-            mockPostsById = mockPostsById.OrderBy(o => o.Id).ToList();
-            postsList = postsList.OrderBy(o => o.Id).ToList();
+            var mockTagsById = mockPost.Tags.OrderBy(o => o.Id).ToList();
+            tagsList = tagsList.OrderBy(o => o.Id).ToList();
 
-            for (var i = 0; i < mockPostsById.Count(); i++)
+            for (var i = 0; i < mockTagsById.Count(); i++)
             {
-                var mockPost = mockPostsById.ElementAt(i);
-                var post = postsList[i];
-                Assert.IsTrue(mockPost.Id == post.Id);
-                Assert.IsTrue(mockPost.Title == post.Title);
-                Assert.IsTrue(mockPost.Text == post.Text);
+                var mockTag = mockTagsById.ElementAt(i);
+                var tag = tagsList[i];
+                Assert.IsTrue(mockTag.Id == tag.Id);
+                Assert.IsTrue(mockTag.Name == tag.Name);
+                Assert.IsTrue(mockTag.Description == tag.Description);
             }
         }
     }

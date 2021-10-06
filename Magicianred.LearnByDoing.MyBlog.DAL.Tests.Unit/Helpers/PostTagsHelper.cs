@@ -7,30 +7,26 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Helpers
 {
     public static class PostTagsHelper
     {
-        /* 
-         public static List<PostTag> GetMockDataWithTags(List<Post> mockPosts, List<Tag> mockTags)
-         {
-             List<PostTag> mockPostTags = new List<PostTag>();
-             mockPostTags[0] = new PostTag() 
-             {
-                 mockPosts[0].Id,
-                 mockTags[0].Id
-             };
+        public static List<PostTag> GetDefaultMockData()
+        {
+            List<PostTag> mockPostTags = new List<PostTag>();
+            mockPostTags.Add(new PostTag()
+            {
+                PostId = 1,
+                TagId = 1
+            });
+            mockPostTags.Add(new PostTag()
+            {
+                PostId = 2,
+                TagId = 2
+            });
+            mockPostTags.Add(new PostTag()
+            {
+                PostId = 3,
+                TagId = 2
+            });
 
-             mockPostTags[1] = new PostTag() 
-             {
-                 mockPosts[0].Id,
-                 mockTags[1].Id
-             };
-
-             mockPostTags[2] = new PostTag() 
-             {
-                 mockPosts[1].Id,
-                 mockTags[1].Id
-             };
-
-             return mockPostTags;
-         }
-        */
+            return mockPostTags;
+        }
     }
 }
