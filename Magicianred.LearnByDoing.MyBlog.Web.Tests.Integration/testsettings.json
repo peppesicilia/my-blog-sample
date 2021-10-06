@@ -1,5 +1,6 @@
 ﻿{
+  "DatabaseType": "MySQL",
   "ConnectionStrings": {
-    "myBlog": "data source=DESKTOP-L1PB0SE;initial catalog=MyBlog;persist security info=True;Integrated Security=SSPI;"
+    "myBlog": "Server=localhost;Database=blog;Uid=root;Pwd=PeppeSQL93$;"
   }
 }

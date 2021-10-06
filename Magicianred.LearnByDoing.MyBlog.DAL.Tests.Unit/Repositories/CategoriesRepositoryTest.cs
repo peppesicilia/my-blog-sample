@@ -135,7 +135,7 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
             _connectionFactory.GetConnection().Returns(db.OpenConnection());
 
             var mockCategory = mockCategories.Where(x => x.Id == id).FirstOrDefault();
-            //mockCategory.Posts = mockPosts.Where(x => x.CategoryId == id).ToList();
+            mockCategory.Posts = mockPosts.Where(x => x.CategoryId == id).ToList();
             var mockPostsById = mockPosts.Where(x => x.CategoryId == id).ToList();
 
             // Act
@@ -153,8 +153,8 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
             Assert.IsTrue(mockCategory.Id == category.Id);
             Assert.IsTrue(mockCategory.Name == category.Name);
             Assert.IsTrue(mockCategory.Description == category.Description);
-
-            //Assert.IsNotNull(posts);
+            //Assert.IsTrue(mockCategory.Posts.Equals(category.Posts));
+         
             Assert.AreEqual(postsList.Count(), mockPostsById.Count());
 
             mockPostsById = mockPostsById.OrderBy(o => o.Id).ToList();

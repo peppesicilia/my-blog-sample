@@ -57,7 +57,7 @@ namespace Magicianred.LearnByDoing.MyBlog.Web.Tests.Integration.Controllers
             // Assert
             Assert.That(response.IsSuccessStatusCode);
             Assert.That(!string.IsNullOrWhiteSpace(responseString));
-            Assert.That(responseString.Contains("<li class=\"post-item post-id"));
+            Assert.That(responseString.Contains("<div class=\"post-item post-id"));
         }
 
         [TestCase(1)]
@@ -118,7 +118,6 @@ namespace Magicianred.LearnByDoing.MyBlog.Web.Tests.Integration.Controllers
 
         [TestCase(1)]
         [TestCase(2)]
-        [TestCase(3)]
         [Category("Integration Test")]
         public async Task should_retrieve_category_by_id(int id)
         {
@@ -132,7 +131,7 @@ namespace Magicianred.LearnByDoing.MyBlog.Web.Tests.Integration.Controllers
             // Assert
             Assert.That(response.IsSuccessStatusCode);
             Assert.That(!string.IsNullOrWhiteSpace(responseString));
-            Assert.That(responseString.Contains(String.Format("<section class=\"category-details category-id-{0}\">", id.ToString())));
+            Assert.That(responseString.Contains(String.Format("<article class=\"category-details category-id-{0}\">", id.ToString())));
         }
 
         [Test]

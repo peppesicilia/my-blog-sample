@@ -27,7 +27,7 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
             IEnumerable<Category> categories = null;
             using (var connection = _connectionFactory.GetConnection())
             {
-                categories = connection.Query<Category>("SELECT Id, Name, Description, CategoryId FROM Categories ORDER BY CreateDate DESC");
+                categories = connection.Query<Category>("SELECT Id, Name, Description FROM Categories ORDER BY CreateDate DESC");
             }
             return categories;
         }

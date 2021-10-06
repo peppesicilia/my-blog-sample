@@ -6,8 +6,14 @@ using System.Text;
 namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Models
 {
     [Alias("Categories")]
-    public class Category : Magicianred.LearnByDoing.MyBlog.Domain.Models.Category
+    public class Category
     {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
         public DateTime CreateDate { get; set; }
+
+        public List<Post> Posts { get; set; }
+      
     }
 }
