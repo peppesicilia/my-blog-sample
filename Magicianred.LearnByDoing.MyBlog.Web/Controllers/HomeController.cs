@@ -26,11 +26,15 @@ namespace Magicianred.LearnByDoing.MyBlog.Web.Controllers
         /// </summary>
         /// <param name="postsService"></param>
         /// <param name="logger"></param>
-        public HomeController(IPostsService postsService, ILogger<HomeController> logger)
+        public HomeController(IPostsService postsService, ICategoriesService categoriesService, ILogger<HomeController> logger)
         {
             _postsService = postsService;
+            _categoriesService = categoriesService;
             _logger = logger;
         }
+
+
+        //Posts
 
         /// <summary>
         /// Retrieve all Posts
@@ -54,6 +58,24 @@ namespace Magicianred.LearnByDoing.MyBlog.Web.Controllers
             var post = _postsService.GetById(id);
             return View(post);
         }
+
+
+        //Categories
+
+        public IActionResult Categories()
+        {
+            var categories = _categoriesService.GetAll();
+            return View(categories);
+        }
+
+        public IActionResult Category(int id)
+        {
+            var category = _categoriesService.GetById(id);
+            return View(category);
+        }
+
+
+        //Altro
 
         /// <summary>
         /// Show about page
@@ -81,20 +103,6 @@ namespace Magicianred.LearnByDoing.MyBlog.Web.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-
-        //Categories
-
-        public IActionResult Categories()
-        {
-            var categories = _categoriesService.GetAll();
-            return View(categories);
-        }
-
-        public IActionResult Category(int id)
-        {
-            var category = _categoriesService.GetById(id);
-            return View(category);
         }
     }
 }

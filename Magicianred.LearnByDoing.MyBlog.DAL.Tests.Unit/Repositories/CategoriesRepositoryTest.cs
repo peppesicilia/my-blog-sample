@@ -1,4 +1,5 @@
-﻿using Magicianred.LearnByDoing.MyBlog.DAL.Repositories;
+﻿using Dapper;
+using Magicianred.LearnByDoing.MyBlog.DAL.Repositories;
 using Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Helpers;
 using Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Models;
 using Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Repositories;
@@ -60,8 +61,8 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
 
             for (var i = 0; i < mockCategories.Count; i++)
             {
-                var mockCategory = mockCategories[0];
-                var category = categoriesList[0];
+                var mockCategory = mockCategories[i];
+                var category = categoriesList[i];
                 Assert.IsTrue(mockCategory.Id == category.Id);
                 Assert.IsTrue(mockCategory.Name == category.Name);
                 Assert.IsTrue(mockCategory.Description == category.Description);
@@ -114,7 +115,59 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
 
             // Assert
             Assert.IsNull(category);
+        }
 
+        [TestCase(1)]
+        [TestCase(2)]
+        [Category("Unit test")]
+        public void should_retrieve_all_posts_of_category(int id)
+        {
+            // Arrange
+            var mockCategories = CategoriesHelper.GetDefaultMockData();
+            // insert post because of InMemory DB must have table Posts
+            var mockPosts = PostsHelper.GetDefaultMockData();
+
+            var db = new InMemoryDatabase();
+
+            db.Insert<Category>(mockCategories);
+            db.Insert<Post>(mockPosts);
+
+            _connectionFactory.GetConnection().Returns(db.OpenConnection());
+
+            var mockCategory = mockCategories.Where(x => x.Id == id).FirstOrDefault();
+            //mockCategory.Posts = mockPosts.Where(x => x.CategoryId == id).ToList();
+            var mockPostsById = mockPosts.Where(x => x.CategoryId == id).ToList();
+
+            // Act
+            var category = _sut.GetById(id);
+            // var posts = category.Posts;
+
+            List<Domain.Models.Post> postsList = null;
+            if (category != null && category.Posts != null && category.Posts.Any())
+            {
+                postsList = category.Posts;
+            }
+
+            // Assert
+            Assert.IsNotNull(category);
+            Assert.IsTrue(mockCategory.Id == category.Id);
+            Assert.IsTrue(mockCategory.Name == category.Name);
+            Assert.IsTrue(mockCategory.Description == category.Description);
+
+            //Assert.IsNotNull(posts);
+            Assert.AreEqual(postsList.Count(), mockPostsById.Count());
+
+            mockPostsById = mockPostsById.OrderBy(o => o.Id).ToList();
+            postsList = postsList.OrderBy(o => o.Id).ToList();
+
+            for (var i = 0; i < mockPostsById.Count(); i++)
+            {
+                var mockPost = mockPostsById.ElementAt(i);
+                var post = postsList[i];
+                Assert.IsTrue(mockPost.Id == post.Id);
+                Assert.IsTrue(mockPost.Title == post.Title);
+                Assert.IsTrue(mockPost.Text == post.Text);
+            }
         }
     }
 }

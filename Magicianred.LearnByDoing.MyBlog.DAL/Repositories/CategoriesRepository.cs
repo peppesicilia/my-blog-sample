@@ -40,6 +40,11 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
             {
                 // TOP 1 is not a command for SQLite, remove
                 category = connection.QueryFirstOrDefault<Category>("SELECT * FROM Categories WHERE Id = @CategoryId", new { CategoryId = id });
+
+                if (category != null)
+                {
+                    category.Posts = connection.Query<Post>("SELECT * FROM Posts WHERE CategoryId = @CategoryId", new { CategoryId = id }).AsList();
+                }
             }
             return category;
         }
@@ -51,6 +56,11 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
             {
                 // TOP 1 is not a command for SQLite, remove
                 category = connection.QueryFirstOrDefault<Category>("SELECT * FROM Categories WHERE Id = @CategoryId", new { CategoryId = id });
+
+                if (category != null)
+                {
+                    category.Posts = connection.Query<Post>("SELECT * FROM Posts WHERE CategoryId = @CategoryId", new { CategoryId = id }).AsList();
+                }
             }
             return category.Posts;
         }

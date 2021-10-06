@@ -16,13 +16,20 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Helpers
                 Title = "This is a title for post 1",
                 Text = "This is a text for post 1",
                 CategoryId = 1
-            }); ;
+            }); 
             mockPosts.Add(new Post()
             {
                 Id = 2,
                 Title = "This is a title for post 2",
                 Text = "This is a text for post 2",
                 CategoryId = 1
+            });
+            mockPosts.Add(new Post()
+            {
+                Id = 3,
+                Title = "This is a title for post 3",
+                Text = "This is a text for post 3",
+                CategoryId = 2
             });
             return mockPosts;
         }

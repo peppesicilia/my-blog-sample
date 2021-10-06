@@ -46,7 +46,7 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Services
 
         public List<Post> GetPostsById(int id)
         {
-            return (List<Post>)_categoriesRepository.GetPostsById(id);
+            return _categoriesRepository.GetPostsById(id).ToList();
         }
     }
 }
