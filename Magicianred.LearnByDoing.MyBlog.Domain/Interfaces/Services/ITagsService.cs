@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Services
 {
-    public interface ICategoriesService
+    public interface ITagsService
     {
-        public List<Category> GetAll();
-        public Category GetById(int id);
-        public List<Post> GetPostsById(int id);
+        public List<Tag> GetAll();
+        public Tag GetById(int id);
+        //public List<Post> GetPostsById(int id);
     }
 }

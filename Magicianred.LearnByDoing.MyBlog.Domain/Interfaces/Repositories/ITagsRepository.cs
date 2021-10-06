@@ -3,10 +3,10 @@ using System.Collections.Generic;
 
 namespace Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Repositories
 {
-    public interface IPostsRepository
+    public interface ITagsRepository
     {
-        public IEnumerable<Post> GetAll();
-        Post GetById(int id);
-        //public IEnumerable<Tag> GetTagsById(int id);
+        public IEnumerable<Tag> GetAll();
+        Tag GetById(int id);
+        //public IEnumerable<Tag> GetPostsById(int id);
     }
 }
