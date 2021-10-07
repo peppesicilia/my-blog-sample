@@ -41,7 +41,7 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
                 if (tag != null)
                 {
                     tag.Posts = connection.Query<Post>("SELECT Id, Title, Text, CategoryId FROM Posts WHERE Id IN " +
-                        "{ SELECT PostId from PostTags WHERE TagId = @TagId }", new { TagId = id }).AsList();
+                        "( SELECT PostId from PostTags WHERE TagId = @TagId )", new { TagId = id }).AsList();
                 }
             }
             return tag;
@@ -58,7 +58,7 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
                 if (tag != null)
                 {
                     tag.Posts = connection.Query<Post>("SELECT Id, Title, Text, CategoryId FROM Posts WHERE Id IN " +
-                        "{ SELECT PostId from PostTags WHERE TagId = @TagId }", new { TagId = id }).AsList();
+                        "( SELECT PostId from PostTags WHERE TagId = @TagId )", new { TagId = id }).AsList();
                 }
             }
             return tag.Posts;

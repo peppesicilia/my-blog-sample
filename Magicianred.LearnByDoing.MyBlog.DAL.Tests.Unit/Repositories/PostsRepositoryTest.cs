@@ -44,13 +44,13 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         public void should_retrieve_all_posts()
         {
             // Arrange
-            var mockPosts = PostsHelper.GetDefaultMockData();
             var mockTags = TagsHelper.GetDefaultMockData();
             var mockPostTags = PostTagsHelper.GetDefaultMockData();
+            var mockPosts = PostsHelper.GetMockDataWithTags(mockTags);
             var db = new InMemoryDatabase();
             db.Insert<Tag>(mockTags);
-            db.Insert<Post>(mockPosts);
             db.Insert<PostTag>(mockPostTags);
+            db.Insert<Post>(mockPosts);
 
             _connectionFactory.GetConnection().Returns(db.OpenConnection());
 

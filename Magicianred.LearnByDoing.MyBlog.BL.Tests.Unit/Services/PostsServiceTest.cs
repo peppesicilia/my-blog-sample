@@ -4,6 +4,7 @@ using Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Repositories;
 using Magicianred.LearnByDoing.MyBlog.Domain.Models;
 using NSubstitute;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
@@ -63,6 +64,7 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
 
         [TestCase(1)]
         [TestCase(2)]
+        [TestCase(3)]
         [Category("Unit test")]
         public void should_retrieve_one_post_by_id(int id)
         {
@@ -98,6 +100,7 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
 
         [TestCase(1)]
         [TestCase(2)]
+        [TestCase(3)]
         [Category("Unit test")]
         public void should_retrieve_all_tags_of_post(int id)
         {
@@ -106,23 +109,35 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
             var mockPost = mockPosts.Where(x => x.Id == id).FirstOrDefault();
 
             var mockPostTags = PostTagsHelper.GetDefaultMockData().Where(x => x.PostId == id).ToList();
-            var mockTags = TagsHelper.GetDefaultMockData().Where(x => x.Id == id).ToList(); ;
+            var mockTags = TagsHelper.GetDefaultMockData().ToList();
+
+            List<Tag> mockTagsById = new List<Tag>();
+            foreach (var tag in mockTags)
+            {
+                foreach (var postTag in mockPostTags)
+                {
+                    if (tag.Id == postTag.TagId)
+                    {
+                        mockTagsById.Add(tag);
+                    }
+                }
+            }
 
             _postsRepository.GetById(mockPost.Id).Returns(mockPost);
-            _postsRepository.GetTagsById(mockPost.Id).Returns(mockTags);
+            _postsRepository.GetTagsById(mockPost.Id).Returns(mockTagsById);
 
             // Act
             var post = _sut.GetById(id);
             var tags = _sut.GetTagsById(id);
 
             // Assert
-            Assert.IsNotNull(category);
-            Assert.IsTrue(category.Id == id);
-            Assert.AreEqual(posts.Count, mockPosts.Count);
-            foreach (var post in posts)
+            Assert.IsNotNull(post);
+            Assert.IsTrue(post.Id == id);
+            Assert.AreEqual(tags.Count, mockTagsById.Count);
+            foreach (var tag in tags)
             {
-                Assert.IsTrue(mockPosts.Contains(post));
-                mockPosts.Remove(post);
+                Assert.IsTrue(mockTagsById.Contains(tag));
+                mockTagsById.Remove(tag);
             }
         }
     }

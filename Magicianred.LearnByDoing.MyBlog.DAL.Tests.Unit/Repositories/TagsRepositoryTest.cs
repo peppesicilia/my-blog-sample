@@ -79,8 +79,13 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         {
             // Arrange
             var mockTags = TagsHelper.GetDefaultMockData();
+            var mockPosts = PostsHelper.GetDefaultMockData();
+            var mockPostTags = PostTagsHelper.GetDefaultMockData();
+
             var db = new InMemoryDatabase();
+
             db.Insert<Tag>(mockTags);
+
             _connectionFactory.GetConnection().Returns(db.OpenConnection());
 
             var mockTag = mockTags.Where(x => x.Id == id).FirstOrDefault();

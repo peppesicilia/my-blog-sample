@@ -19,6 +19,7 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public string Text { get; set; }
+        public DateTime CreateDate { get; set; }
         public int CategoryId { get; set; }
         public List<Tag> Tags { get; set; }
     }

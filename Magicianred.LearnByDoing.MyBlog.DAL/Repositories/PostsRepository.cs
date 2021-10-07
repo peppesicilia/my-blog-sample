@@ -35,7 +35,7 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
             IEnumerable<Post> posts = null;
             using (var connection = _connectionFactory.GetConnection())
             {
-                posts = connection.Query<Post>("SELECT Id, Title, Text, CategoryId FROM Posts ORDER BY CreateDate DESC");
+                posts = connection.Query<Post>("SELECT Id, Title, Text FROM Posts ORDER BY CreateDate DESC");
             }
             return posts;
         }
@@ -51,12 +51,12 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
             using (var connection = _connectionFactory.GetConnection())
             {
                 // TOP 1 is not a command for SQLite, remove
-                post = connection.QueryFirstOrDefault<Post>("SELECT * FROM Posts WHERE Id = @PostId", new { PostId = id });
+                post = connection.QueryFirstOrDefault<Post>("SELECT Id, Title, Text FROM Posts WHERE Id = @PostId", new { PostId = id });
 
                 if (post != null)
                 {
                     post.Tags = connection.Query<Tag>("SELECT Id, Name, Description FROM Tags WHERE Id IN " +
-                        "{ SELECT TagId from PostTags WHERE PostId = @PostId }", new { PostId = id }).AsList();
+                        "( SELECT TagId from PostTags WHERE PostId = @PostId )", new { PostId = id }).AsList();
                 }
             }
             return post;
@@ -73,7 +73,7 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
                 if (post != null)
                 {
                     post.Tags = connection.Query<Tag>("SELECT Id, Name, Description FROM Tags WHERE Id IN " +
-                        "{ SELECT TagId from PostTags WHERE PostId = @PostId }", new { PostId = id }).AsList();
+                        "( SELECT TagId from PostTags WHERE PostId = @PostId )", new { PostId = id }).AsList();
                 }
             }
             return post.Tags;
