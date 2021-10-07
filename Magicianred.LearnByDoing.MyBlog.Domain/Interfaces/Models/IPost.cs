@@ -10,5 +10,6 @@ namespace Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Models
         string Text { get; set; }
         int CategoryId { get; set; }
         public List<Tag> Tags { get; set; }
+        string Author { get; set; }
     }
 }

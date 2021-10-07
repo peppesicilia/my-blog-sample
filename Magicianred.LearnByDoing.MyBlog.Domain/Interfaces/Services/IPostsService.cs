@@ -7,5 +7,7 @@ namespace Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Services
     {
         public List<Post> GetAll();
         public Post GetById(int id);
+        public List<Tag> GetTagsById(int id);
+        public List<Post> GetAllByAuthor(string author);
     }
 }

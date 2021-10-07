@@ -22,5 +22,6 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Models
         public DateTime CreateDate { get; set; }
         public int CategoryId { get; set; }
         public List<Tag> Tags { get; set; }
+        public string Author { get; set; }
     }
 }

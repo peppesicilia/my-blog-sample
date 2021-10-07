@@ -72,6 +72,7 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
                 Assert.IsTrue(mockPost.Id == post.Id);
                 Assert.IsTrue(mockPost.Title == post.Title);
                 Assert.IsTrue(mockPost.Text == post.Text);
+                Assert.IsTrue(mockPost.Author == post.Author);
             }
         }
 
@@ -105,6 +106,7 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
             Assert.IsTrue(mockPost.Id == post.Id);
             Assert.IsTrue(mockPost.Title == post.Title);
             Assert.IsTrue(mockPost.Text == post.Text);
+            Assert.IsTrue(mockPost.Author == post.Author);
 
         }
 
@@ -163,6 +165,7 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
             Assert.IsTrue(mockPost.Id == post.Id);
             Assert.IsTrue(mockPost.Title == post.Title);
             Assert.IsTrue(mockPost.Text == post.Text);
+            Assert.IsTrue(mockPost.Author == post.Author);
             //Assert.IsTrue(mockPost.Tags.Equals(post.Tags));
 
             Assert.AreEqual(tagsList.Count(), mockPost.Tags.Count());
@@ -178,6 +181,14 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
                 Assert.IsTrue(mockTag.Name == tag.Name);
                 Assert.IsTrue(mockTag.Description == tag.Description);
             }
+        }
+
+        [TestCase("Tom")]
+        [TestCase("Jim")]
+        [Category("Unit test")]
+        public void should_retrieve_all_posts_by_author(string author)
+        {
+
         }
     }
 }
