@@ -101,8 +101,14 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
             var mockTag = mockTags.Where(x => x.Id == id).FirstOrDefault();
 
             var mockPostTags = PostTagsHelper.GetDefaultMockData().Where(x => x.TagId == id).ToList();
-            var mockPosts = PostsHelper.GetDefaultMockData().ToList();
+            
+            //Opzione 1
+            var mockPostTagsIds = mockPostTags.Select(x => x.PostId).ToList();
+            var mockPostsById = PostsHelper.GetDefaultMockData().Where(x => mockPostTagsIds.Contains(x.Id)).ToList();
 
+            /*
+            Opzione 2
+            var mockPosts = PostsHelper.GetDefaultMockData().ToList();
             List<Post> mockPostsById = new List<Post>();
             foreach (var p in mockPosts)
             {
@@ -115,8 +121,12 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
                 }
             }
 
+            _tagsRepository.GetPostsById(mockTag.Id).Returns(mockPostsById);
+            */
+
             _tagsRepository.GetById(mockTag.Id).Returns(mockTag);
             _tagsRepository.GetPostsById(mockTag.Id).Returns(mockPostsById);
+            
 
             // Act
             var tag = _sut.GetById(id);

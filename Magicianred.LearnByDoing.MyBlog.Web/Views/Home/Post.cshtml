@@ -8,10 +8,20 @@
     <p>Learn more <a href="@Url.Action("About", "Home")">about this project</a>.</p>
     @if (@Model != null)
     {
-        <article class="post-details post-id-@(Model.Id)">
+        <section class="post-details post-id-@(Model.Id)">
             <h2>@Model.Title</h2>
             <p>@Model.Text</p>
-        </article>
+
+            <category class="tag-list">
+             @foreach (var tag in Model.Tags)
+             {
+                <div class="tag-item tag-id-@(tag.Id)">
+                 <h2><a href="@Url.Action("Tag", "Home", new { Id = tag.Id })">@tag.Name</a></h2>
+                 <p>@tag.Description</p>
+                </div>
+             }
+            </category>
+        </section>
     }
     else
     {
