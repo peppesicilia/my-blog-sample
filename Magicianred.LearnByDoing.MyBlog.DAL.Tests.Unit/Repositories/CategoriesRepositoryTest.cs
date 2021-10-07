@@ -33,7 +33,7 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         public void TearDownOneTime()
         {
             // dispose
-            //_postsRepository = null;
+            //_categoriesRepository = null;
         }
 
         #endregion

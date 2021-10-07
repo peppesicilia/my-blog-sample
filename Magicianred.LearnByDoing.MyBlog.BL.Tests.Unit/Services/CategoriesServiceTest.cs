@@ -95,5 +95,35 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
             // Assert
             Assert.IsNull(category);
         }
+
+        [TestCase(1)]
+        [TestCase(2)]
+        [Category("Unit test")]
+        public void should_retrieve_all_posts_of_category(int id)
+        {
+            // Arrange
+            var mockCategories = CategoriesHelper.GetDefaultMockData();
+            var mockCategory = mockCategories.Where(x => x.Id == id).FirstOrDefault();
+
+            var mockPosts = PostsHelper.GetDefaultMockData().Where(x => x.CategoryId == id).ToList();
+            //var mockPostsById = mockPosts.Where(x => x.CategoryId == id).ToList();
+
+            _categoriesRepository.GetById(mockCategory.Id).Returns(mockCategory);
+            _categoriesRepository.GetPostsById(mockCategory.Id).Returns(mockPosts);
+
+            // Act
+            var category = _sut.GetById(id);
+            var posts = _sut.GetPostsById(id);
+
+            // Assert
+            Assert.IsNotNull(category);
+            Assert.IsTrue(category.Id == id);
+            Assert.AreEqual(posts.Count, mockPosts.Count);
+            foreach (var post in posts)
+            {
+                Assert.IsTrue(mockPosts.Contains(post));
+                mockPosts.Remove(post);
+            }
+        }
     }
 }

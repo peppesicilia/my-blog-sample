@@ -7,6 +7,6 @@ namespace Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Repositories
     {
         public IEnumerable<Post> GetAll();
         Post GetById(int id);
-        //public IEnumerable<Tag> GetTagsById(int id);
+        public IEnumerable<Tag> GetTagsById(int id);
     }
 }

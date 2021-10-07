@@ -43,7 +43,8 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
 
                 if (category != null)
                 {
-                    category.Posts = connection.Query<Post>("SELECT * FROM Posts WHERE CategoryId = @CategoryId", new { CategoryId = id }).AsList();
+                    category.Posts = connection.Query<Post>("SELECT Id, Title, Text, CategoryId FROM Posts WHERE CategoryId = @CategoryId",
+                        new { CategoryId = id }).AsList();
                 }
             }
             return category;
@@ -59,7 +60,8 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
 
                 if (category != null)
                 {
-                    category.Posts = connection.Query<Post>("SELECT * FROM Posts WHERE CategoryId = @CategoryId", new { CategoryId = id }).AsList();
+                    category.Posts = connection.Query<Post>("SELECT Id, Title, Text, CategoryId FROM Posts WHERE CategoryId = @CategoryId",
+                        new { CategoryId = id }).AsList();
                 }
             }
             return category.Posts;

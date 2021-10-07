@@ -24,14 +24,14 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         {
             // Instance of mock
             _connectionFactory = Substitute.For<IDatabaseConnectionFactory>();
-            _sut = new PostsRepository(_connectionFactory);
+            _sut = new TagsRepository(_connectionFactory);
         }
 
         [OneTimeTearDown]
         public void TearDownOneTime()
         {
             // dispose
-            //_postsRepository = null;
+            //_tagsRepository = null;
         }
 
         #endregion

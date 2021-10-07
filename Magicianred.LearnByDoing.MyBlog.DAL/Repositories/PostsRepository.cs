@@ -52,8 +52,31 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
             {
                 // TOP 1 is not a command for SQLite, remove
                 post = connection.QueryFirstOrDefault<Post>("SELECT * FROM Posts WHERE Id = @PostId", new { PostId = id });
+
+                if (post != null)
+                {
+                    post.Tags = connection.Query<Tag>("SELECT Id, Name, Description FROM Tags WHERE Id IN " +
+                        "{ SELECT TagId from PostTags WHERE PostId = @PostId }", new { PostId = id }).AsList();
+                }
             }
             return post;
+        }
+
+        public IEnumerable<Tag> GetTagsById(int id)
+        {
+            Post post = null;
+            using (var connection = _connectionFactory.GetConnection())
+            {
+                // TOP 1 is not a command for SQLite, remove
+                post = connection.QueryFirstOrDefault<Post>("SELECT * FROM Posts WHERE Id = @PostId", new { PostId = id });
+
+                if (post != null)
+                {
+                    post.Tags = connection.Query<Tag>("SELECT Id, Name, Description FROM Tags WHERE Id IN " +
+                        "{ SELECT TagId from PostTags WHERE PostId = @PostId }", new { PostId = id }).AsList();
+                }
+            }
+            return post.Tags;
         }
     }
 }

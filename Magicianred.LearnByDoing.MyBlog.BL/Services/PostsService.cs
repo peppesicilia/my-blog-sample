@@ -44,5 +44,9 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Services
             return _postsRepository.GetById(id);
         }
 
+        public List<Tag> GetTagsById(int id)
+        {
+            return _postsRepository.GetTagsById(id).ToList();
+        }
     }
 }
