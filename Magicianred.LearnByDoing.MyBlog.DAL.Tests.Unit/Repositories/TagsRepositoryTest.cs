@@ -42,12 +42,14 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         {
             // Arrange
             var mockPosts = PostsHelper.GetDefaultMockData();
-            var mockTags = TagsHelper.GetDefaultMockData();
             var mockPostTags = PostTagsHelper.GetDefaultMockData();
+            var mockTags = TagsHelper.GetMockDataWithPosts(mockPosts);
+
             var db = new InMemoryDatabase();
-            db.Insert<Tag>(mockTags);
+            
             db.Insert<Post>(mockPosts);
             db.Insert<PostTag>(mockPostTags);
+            db.Insert<Tag>(mockTags);
 
             _connectionFactory.GetConnection().Returns(db.OpenConnection());
 
@@ -78,12 +80,14 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         public void should_retrieve_tag_by_id(int id)
         {
             // Arrange
-            var mockTags = TagsHelper.GetDefaultMockData();
             var mockPosts = PostsHelper.GetDefaultMockData();
             var mockPostTags = PostTagsHelper.GetDefaultMockData();
+            var mockTags = TagsHelper.GetMockDataWithPosts(mockPosts);
 
             var db = new InMemoryDatabase();
 
+            db.Insert<Post>(mockPosts);
+            db.Insert<PostTag>(mockPostTags);
             db.Insert<Tag>(mockTags);
 
             _connectionFactory.GetConnection().Returns(db.OpenConnection());
@@ -126,17 +130,14 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         {
             // Arrange
             var mockPosts = PostsHelper.GetDefaultMockData();
-            //var mockTags = TagsHelper.GetDefaultMockData();
             var mockPostTags = PostTagsHelper.GetDefaultMockData();
-
             var mockTags = TagsHelper.GetMockDataWithPosts(mockPosts);
-            //mockPosts = PostsHelper.GetMockDataWithPosts(mockTags);
 
             var db = new InMemoryDatabase();
 
             db.Insert<Post>(mockPosts);
-            db.Insert<Tag>(mockTags);
             db.Insert<PostTag>(mockPostTags);
+            db.Insert<Tag>(mockTags);
 
             _connectionFactory.GetConnection().Returns(db.OpenConnection());
 

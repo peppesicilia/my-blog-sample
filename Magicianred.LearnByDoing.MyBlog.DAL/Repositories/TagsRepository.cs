@@ -36,7 +36,8 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
             using (var connection = _connectionFactory.GetConnection())
             {
                 // TOP 1 is not a command for SQLite, remove
-                tag = connection.QueryFirstOrDefault<Tag>("SELECT * FROM Tags WHERE Id = @TagId", new { TagId = id });
+                tag = connection.QueryFirstOrDefault<Tag>("SELECT Id, Name, Description FROM Tags WHERE Id = @TagId",
+                    new { TagId = id });
 
                 if (tag != null)
                 {
@@ -53,7 +54,8 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
             using (var connection = _connectionFactory.GetConnection())
             {
                 // TOP 1 is not a command for SQLite, remove
-                tag = connection.QueryFirstOrDefault<Tag>("SELECT * FROM Tags WHERE Id = @TagId", new { TagId = id });
+                tag = connection.QueryFirstOrDefault<Tag>("SELECT Id, Name, Description FROM Tags WHERE Id = @TagId",
+                    new { TagId = id });
 
                 if (tag != null)
                 {

@@ -82,9 +82,16 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         public void should_retrieve_post_by_id(int id)
         {
             // Arrange
-            var mockPosts = PostsHelper.GetDefaultMockData();
+            var mockTags = TagsHelper.GetDefaultMockData();
+            var mockPostTags = PostTagsHelper.GetDefaultMockData();
+            var mockPosts = PostsHelper.GetMockDataWithTags(mockTags);
+
             var db = new InMemoryDatabase();
+            
+            db.Insert<Tag>(mockTags);
+            db.Insert<PostTag>(mockPostTags);
             db.Insert<Post>(mockPosts);
+
             _connectionFactory.GetConnection().Returns(db.OpenConnection());
 
             var mockPost = mockPosts.Where(x => x.Id == id).FirstOrDefault();
@@ -134,9 +141,9 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
 
             var db = new InMemoryDatabase();
 
-            db.Insert<Post>(mockPosts);
             db.Insert<Tag>(mockTags);
             db.Insert<PostTag>(mockPostTags);
+            db.Insert<Post>(mockPosts);
 
             _connectionFactory.GetConnection().Returns(db.OpenConnection());
 
