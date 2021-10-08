@@ -35,5 +35,29 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Helpers
 
             return mockPosts;
         }
+
+        public static List<Post> GetMockDataForPages()
+        {
+            List<Post> mockPosts = PostsHelper.GetDefaultMockData();
+
+            mockPosts.Add(new Post()
+            {
+                Id = 4,
+                Title = "This is a title for post 4",
+                Text = "This is a text for post 4",
+                CategoryId = 1,
+                Author = "Jim"
+            });
+            mockPosts.Add(new Post()
+            {
+                Id = 5,
+                Title = "This is a title for post 5",
+                Text = "This is a text for post 5",
+                CategoryId = 1,
+                Author = "Jim"
+            });
+
+            return mockPosts;
+        }
     }
 }

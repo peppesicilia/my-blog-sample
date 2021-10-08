@@ -223,16 +223,19 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         }
 
         [TestCase(1, 3)]
-        [TestCase(2, 4)]
+        [TestCase(2, 4)] //non funziona
         [Category("Unit test")]
         public void should_retrieve_all_paginated_posts(int page, int pageSize)
         {
             // Arrange
 
             //var mockPostsSize = new List<Post>(pageSize); 
-            var mockPosts = PostsHelper.GetMockDataForPages();
             //var mockPosts = PostsHelper.GetMockDataForPages().CopyTo((page-1)*pageSize, mockPostsSize, 0, pageSize);
-            
+            //By Simone
+            //var mockPosts = PostsHelper.GetMockDataForPages().Take(pageSize).Skip(page).ToList();
+
+            var mockPosts = PostsHelper.GetMockDataForPages();
+
             var db = new InMemoryDatabase();
             db.Insert<Post>(mockPosts);
 
@@ -243,8 +246,9 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
 
             // Assert
             Assert.IsNotNull(posts);
+            //Assert.AreEqual(posts.Count(), mockPosts.Count());
             Assert.IsTrue(posts.Count() <= pageSize, "ERRORE: Il numero dei post è maggiore della dimensione della pagina!");
-            //Assert.IsTrue(mockPostsSize.Count() <= pageSize, "ERRORE: Il numero dei post è maggiore della dimensione della pagina!");
+            //Assert.IsTrue(mockPosts.Count() <= pageSize, "ERRORE: Il numero dei post è maggiore della dimensione della pagina!");
         }
     }
 }
