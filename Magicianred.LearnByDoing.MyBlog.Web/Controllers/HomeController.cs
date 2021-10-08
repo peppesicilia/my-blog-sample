@@ -45,11 +45,14 @@ namespace Magicianred.LearnByDoing.MyBlog.Web.Controllers
         /// <returns>list of Posts</returns>
         public IActionResult Index(string author = null)
         {
-            var posts = _postsService.GetAll();
-
+            List<Post> posts = new List<Post>();
             if (!String.IsNullOrWhiteSpace(author))
             {
                 posts = _postsService.GetAllByAuthor(author);
+            }
+            else
+            {
+                posts = _postsService.GetAll();
             }
 
             return View(posts);

@@ -221,5 +221,30 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
                 Assert.IsTrue(mockPost.Author.Equals(post.Author));
             }
         }
+
+        [TestCase(1, 3)]
+        [TestCase(2, 4)]
+        [Category("Unit test")]
+        public void should_retrieve_all_paginated_posts(int page, int pageSize)
+        {
+            // Arrange
+
+            //var mockPostsSize = new List<Post>(pageSize); 
+            var mockPosts = PostsHelper.GetMockDataForPages();
+            //var mockPosts = PostsHelper.GetMockDataForPages().CopyTo((page-1)*pageSize, mockPostsSize, 0, pageSize);
+            
+            var db = new InMemoryDatabase();
+            db.Insert<Post>(mockPosts);
+
+            _connectionFactory.GetConnection().Returns(db.OpenConnection());
+
+            // Act
+            var posts = _sut.GetPaginatedAll(page, pageSize).ToList();
+
+            // Assert
+            Assert.IsNotNull(posts);
+            Assert.IsTrue(posts.Count() <= pageSize, "ERRORE: Il numero dei post è maggiore della dimensione della pagina!");
+            //Assert.IsTrue(mockPostsSize.Count() <= pageSize, "ERRORE: Il numero dei post è maggiore della dimensione della pagina!");
+        }
     }
 }
