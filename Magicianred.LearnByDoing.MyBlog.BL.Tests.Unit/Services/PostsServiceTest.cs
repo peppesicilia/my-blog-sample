@@ -107,10 +107,14 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
             // Arrange
             var mockPosts = PostsHelper.GetDefaultMockData();
             var mockPost = mockPosts.Where(x => x.Id == id).FirstOrDefault();
-
             var mockPostTags = PostTagsHelper.GetDefaultMockData().Where(x => x.PostId == id).ToList();
-            var mockTags = TagsHelper.GetDefaultMockData().ToList();
 
+            //By Simone
+            var mockPostTagsIds = mockPostTags.Select(x => x.TagId).ToList();
+            var mockTagsById = TagsHelper.GetDefaultMockData().Where(x => mockPostTagsIds.Contains(x.Id)).ToList();
+
+            /*
+            var mockTags = TagsHelper.GetDefaultMockData().ToList();
             List<Tag> mockTagsById = new List<Tag>();
             foreach (var tag in mockTags)
             {
@@ -122,6 +126,7 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
                     }
                 }
             }
+            */
 
             _postsRepository.GetById(mockPost.Id).Returns(mockPost);
             _postsRepository.GetTagsById(mockPost.Id).Returns(mockTagsById);
@@ -138,6 +143,29 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
             {
                 Assert.IsTrue(mockTagsById.Contains(tag));
                 mockTagsById.Remove(tag);
+            }
+        }
+
+        [TestCase("Tom")]
+        [TestCase("Jim")]
+        [Category("Unit test")]
+        public void should_retrieve_all_posts_by_author(string author)
+        {
+            // Arrange
+            var mockPosts = PostsHelper.GetDefaultMockData().Where(x => x.Author.Equals(author)).ToList();
+
+            _postsRepository.GetAllByAuthor(author).Returns(mockPosts);
+
+            // Act
+            var posts = _sut.GetAllByAuthor(author);
+
+            // Assert
+            Assert.IsNotNull(posts);
+            Assert.AreEqual(posts.Count, mockPosts.Count);
+            foreach (var post in posts)
+            {
+                Assert.IsTrue(mockPosts.Contains(post));
+                mockPosts.Remove(post);
             }
         }
     }

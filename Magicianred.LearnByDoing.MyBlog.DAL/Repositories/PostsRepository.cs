@@ -85,7 +85,7 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
             IEnumerable<Post> posts = null;
             using (var connection = _connectionFactory.GetConnection())
             {
-                posts = connection.Query<Post>("SELECT Id, Title, Text FROM Posts WHERE Author = @Author", new { Author = author });
+                posts = connection.Query<Post>("SELECT Id, Title, Text, Author FROM Posts WHERE Author = @Author", new { Author = author });
             }
             return posts;
         }

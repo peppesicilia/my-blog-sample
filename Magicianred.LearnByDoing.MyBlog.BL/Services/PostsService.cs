@@ -48,5 +48,10 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Services
         {
             return _postsRepository.GetTagsById(id).ToList();
         }
+
+        public List<Post> GetAllByAuthor(string author)
+        {
+            return _postsRepository.GetAllByAuthor(author).ToList();
+        }
     }
 }

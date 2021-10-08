@@ -188,7 +188,38 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         [Category("Unit test")]
         public void should_retrieve_all_posts_by_author(string author)
         {
+            // Arrange
+            var mockTags = TagsHelper.GetDefaultMockData();
+            var mockPostTags = PostTagsHelper.GetDefaultMockData();
+            var mockPosts = PostsHelper.GetMockDataWithTags(mockTags).Where(x => x.Author.Equals(author)).ToList();
 
+            var db = new InMemoryDatabase();
+
+            db.Insert<Tag>(mockTags);
+            db.Insert<PostTag>(mockPostTags);
+            db.Insert<Post>(mockPosts);
+
+            _connectionFactory.GetConnection().Returns(db.OpenConnection());
+
+            // Act
+            var posts = _sut.GetAllByAuthor(author).ToList();
+
+            // Assert
+            Assert.IsNotNull(posts);
+            Assert.AreEqual(posts.Count(), mockPosts.Count());
+
+            mockPosts = mockPosts.OrderBy(o => o.Id).ToList();
+            posts = posts.OrderBy(o => o.Id).ToList();
+
+            for (var i = 0; i < mockPosts.Count; i++)
+            {
+                var mockPost = mockPosts[i];
+                var post = posts[i];
+                Assert.IsTrue(mockPost.Id == post.Id);
+                Assert.IsTrue(mockPost.Title == post.Title);
+                Assert.IsTrue(mockPost.Text == post.Text);
+                Assert.IsTrue(mockPost.Author.Equals(post.Author));
+            }
         }
     }
 }

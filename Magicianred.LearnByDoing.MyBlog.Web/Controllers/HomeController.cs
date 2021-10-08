@@ -43,9 +43,15 @@ namespace Magicianred.LearnByDoing.MyBlog.Web.Controllers
         /// GET: <HomeController>
         /// </summary>
         /// <returns>list of Posts</returns>
-        public IActionResult Index()
+        public IActionResult Index(string author = null)
         {
             var posts = _postsService.GetAll();
+
+            if (!String.IsNullOrWhiteSpace(author))
+            {
+                posts = _postsService.GetAllByAuthor(author);
+            }
+
             return View(posts);
         }
 
