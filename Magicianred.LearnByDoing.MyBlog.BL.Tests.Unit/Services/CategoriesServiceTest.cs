@@ -125,5 +125,31 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
                 mockPosts.Remove(post);
             }
         }
+
+        [TestCase(1, 3)]
+        [TestCase(2, 2)]
+        [Category("Unit test")]
+        public void should_retrieve_all_paginated_categories(int page, int pageSize)
+        {
+            // Arrange
+
+            var mockCategories = CategoriesHelper.GetMockDataForPages().Take(pageSize).Skip(page).ToList();
+
+            _categoriesRepository.GetPaginatedAll(page, pageSize).Returns(mockCategories);
+
+            // Act
+            var categories = _sut.GetPaginatedAll(page, pageSize);
+
+            // Assert
+            Assert.IsNotNull(categories);
+            Assert.IsTrue(categories.Count <= pageSize);
+
+            Assert.AreEqual(categories.Count, mockCategories.Count);
+            foreach (var tag in categories)
+            {
+                Assert.IsTrue(mockCategories.Contains(tag));
+                mockCategories.Remove(tag);
+            }
+        }
     }
 }

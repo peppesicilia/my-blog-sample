@@ -65,5 +65,17 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
             }
             return tag.Posts;
         }
+
+        public IEnumerable<Tag> GetPaginatedAll(int page, int pageSize)
+        {
+            IEnumerable<Tag> tags = null;
+            using (var connection = _connectionFactory.GetConnection())
+            {
+                tags = connection.Query<Tag>("SELECT Id, Name, Description FROM Tags ORDER BY CreateDate DESC " +
+                    "LIMIT @offset, @pageSize ", new { offset = ((page - 1) * pageSize), pageSize = pageSize });
+            }
+
+            return tags;
+        }
     }
 }

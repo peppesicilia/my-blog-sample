@@ -52,7 +52,7 @@ namespace Magicianred.LearnByDoing.MyBlog.Web.Controllers
             }
             else
             {
-                posts = _postsService.GetAll();
+                posts = _postsService.GetPaginatedAll(page, pageSize);
             }
 
             ViewBag.CurrentPage = page;
@@ -78,9 +78,15 @@ namespace Magicianred.LearnByDoing.MyBlog.Web.Controllers
 
         //Categories
 
-        public IActionResult Categories()
+        public IActionResult Categories(int page = 1, int pageSize = 3)
         {
-            var categories = _categoriesService.GetAll();
+            var categories = _categoriesService.GetPaginatedAll(page, pageSize);
+
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.IsFirst = ((int)ViewBag.CurrentPage > 1);
+            ViewBag.IsLast = (categories.Count >= (int)ViewBag.PageSize);
+
             return View(categories);
         }
 
@@ -93,9 +99,15 @@ namespace Magicianred.LearnByDoing.MyBlog.Web.Controllers
 
         //Tags
 
-        public IActionResult Tags()
+        public IActionResult Tags(int page = 1, int pageSize = 3)
         {
-            var tags = _tagsService.GetAll();
+            var tags = _tagsService.GetPaginatedAll(page, pageSize);
+
+            ViewBag.CurrentPage = page;
+            ViewBag.PageSize = pageSize;
+            ViewBag.IsFirst = ((int)ViewBag.CurrentPage > 1);
+            ViewBag.IsLast = (tags.Count >= (int)ViewBag.PageSize);
+
             return View(tags);
         }
 

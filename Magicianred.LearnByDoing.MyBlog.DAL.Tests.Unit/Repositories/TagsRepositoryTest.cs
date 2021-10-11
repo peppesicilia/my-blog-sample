@@ -174,5 +174,33 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
                 Assert.IsTrue(mockPost.Text == post.Text);
             }
         }
+
+        [TestCase(1, 3)]
+        [TestCase(2, 2)]
+        [Category("Unit test")]
+        public void should_retrieve_all_paginated_tags(int page, int pageSize)
+        {
+            // Arrange
+
+            //var mockTagsSize = new List<Tag>(pageSize); 
+            //var mockTags = TagsHelper.GetMockDataForPages().CopyTo((page-1)*pageSize, mockTagsSize, 0, pageSize);
+
+            //By Simone
+            var mockTags = TagsHelper.GetMockDataForPages().Take(pageSize).Skip(page).ToList();
+
+            var db = new InMemoryDatabase();
+            db.Insert<Tag>(mockTags);
+
+            _connectionFactory.GetConnection().Returns(db.OpenConnection());
+
+            // Act
+            var tags = _sut.GetPaginatedAll(page, pageSize).ToList();
+
+            // Assert
+            Assert.IsNotNull(tags);
+            //Assert.AreEqual(tags.Count(), mockTags.Count());
+            Assert.IsTrue(tags.Count() <= pageSize, "ERRORE: Il numero dei tag è maggiore della dimensione della pagina!");
+            //Assert.IsTrue(mockTags.Count() <= pageSize, "ERRORE: Il numero dei tag è maggiore della dimensione della pagina!");
+        }
     }
 }

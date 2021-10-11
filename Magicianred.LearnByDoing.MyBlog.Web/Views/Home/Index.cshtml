@@ -1,6 +1,4 @@
 ﻿@model List<Magicianred.LearnByDoing.MyBlog.Domain.Models.Post>
-@await Html.PartialAsync("_PaginationPartial", "Home", new ViewDataDictionary(ViewData) { { "ActionPath", "Index" } })
-
 
 @{
     ViewData["Title"] = "Home Page";
@@ -19,4 +17,7 @@
             </div>
         }
     </div>
+
+    @await Html.PartialAsync("_PaginationPartial", "Home", new ViewDataDictionary(ViewData) { { "ActionPath", "Index" } })
+
 </div>

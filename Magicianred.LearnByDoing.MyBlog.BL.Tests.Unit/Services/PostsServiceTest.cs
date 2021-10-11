@@ -193,7 +193,6 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
                 Assert.IsTrue(mockPosts.Contains(post));
                 mockPosts.Remove(post);
             }
-
         }
     }
 }

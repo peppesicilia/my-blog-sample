@@ -22,5 +22,25 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Helpers
             });
             return mockTags;
         }
+
+        public static List<Tag> GetMockDataForPages()
+        {
+            List<Tag> mockTags = TagsHelper.GetDefaultMockData();
+
+            mockTags.Add(new Tag()
+            {
+                Id = 3,
+                Name = "This is a name for tag 3",
+                Description = "This is a description for tag 3"
+            });
+            mockTags.Add(new Tag()
+            {
+                Id = 4,
+                Name = "This is a name for tag 4",
+                Description = "This is a description for tag 4"
+            });
+
+            return mockTags;
+        }
     }
 }

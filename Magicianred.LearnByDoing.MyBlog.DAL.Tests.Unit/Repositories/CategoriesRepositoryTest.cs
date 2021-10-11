@@ -169,5 +169,33 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
                 Assert.IsTrue(mockPost.Text == post.Text);
             }
         }
+
+        [TestCase(1, 3)]
+        [TestCase(2, 2)]
+        [Category("Unit test")]
+        public void should_retrieve_all_paginated_categories(int page, int pageSize)
+        {
+            // Arrange
+
+            //var mockCategoriesSize = new List<Category>(pageSize); 
+            //var mockCategories = CategoriesHelper.GetMockDataForPages().CopyTo((page-1)*pageSize, mockCategoriesSize, 0, pageSize);
+
+            //By Simone
+            var mockCategories = CategoriesHelper.GetMockDataForPages().Take(pageSize).Skip(page).ToList();
+
+            var db = new InMemoryDatabase();
+            db.Insert<Category>(mockCategories);
+
+            _connectionFactory.GetConnection().Returns(db.OpenConnection());
+
+            // Act
+            var categories = _sut.GetPaginatedAll(page, pageSize).ToList();
+
+            // Assert
+            Assert.IsNotNull(categories);
+            //Assert.AreEqual(categories.Count(), mockCategories.Count());
+            Assert.IsTrue(categories.Count() <= pageSize, "ERRORE: Il numero delle categorie è maggiore della dimensione della pagina!");
+            //Assert.IsTrue(mockCategories.Count() <= pageSize, "ERRORE: Il numero delle categorie è maggiore della dimensione della pagina!");
+        }
     }
 }

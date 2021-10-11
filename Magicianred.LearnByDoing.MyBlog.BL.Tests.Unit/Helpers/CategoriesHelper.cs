@@ -22,5 +22,25 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Helpers
             });
             return mockCategories;
         }
+
+        public static List<Category> GetMockDataForPages()
+        {
+            List<Category> mockCategories = CategoriesHelper.GetDefaultMockData();
+
+            mockCategories.Add(new Category()
+            {
+                Id = 3,
+                Name = "This is a name for category 3",
+                Description = "This is a description for category 3"
+            });
+            mockCategories.Add(new Category()
+            {
+                Id = 4,
+                Name = "This is a name for category 4",
+                Description = "This is a description for category 4"
+            });
+
+            return mockCategories;
+        }
     }
 }

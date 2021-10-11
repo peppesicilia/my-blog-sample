@@ -38,5 +38,10 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Services
         {
             return _tagsRepository.GetPostsById(id).ToList();
         }
+
+        public List<Tag> GetPaginatedAll(int page, int pageSize)
+        {
+            return _tagsRepository.GetPaginatedAll(page, pageSize).ToList();
+        }
     }
 }

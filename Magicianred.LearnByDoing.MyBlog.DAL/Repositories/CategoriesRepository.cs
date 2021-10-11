@@ -66,5 +66,17 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
             }
             return category.Posts;
         }
+
+        public IEnumerable<Category> GetPaginatedAll(int page, int pageSize)
+        {
+            IEnumerable<Category> categories = null;
+            using (var connection = _connectionFactory.GetConnection())
+            {
+                categories = connection.Query<Category>("SELECT Id, Name, Description FROM Categories ORDER BY CreateDate DESC " +
+                    "LIMIT @offset, @pageSize ", new { offset = ((page - 1) * pageSize), pageSize = pageSize });
+            }
+
+            return categories;
+        }
     }
 }
