@@ -231,10 +231,9 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
 
             //var mockPostsSize = new List<Post>(pageSize); 
             //var mockPosts = PostsHelper.GetMockDataForPages().CopyTo((page-1)*pageSize, mockPostsSize, 0, pageSize);
+            
             //By Simone
-            //var mockPosts = PostsHelper.GetMockDataForPages().Take(pageSize).Skip(page).ToList();
-
-            var mockPosts = PostsHelper.GetMockDataForPages();
+            var mockPosts = PostsHelper.GetMockDataForPages().Take(pageSize).Skip(page).ToList();
 
             var db = new InMemoryDatabase();
             db.Insert<Post>(mockPosts);
