@@ -55,6 +55,8 @@ namespace Magicianred.LearnByDoing.MyBlog.Web.Controllers
                 posts = _postsService.GetPaginatedAll(page, pageSize);
             }
 
+            posts = posts.OrderBy(o => o.Id).ToList();
+
             ViewBag.CurrentPage = page;
             ViewBag.PageSize = pageSize;
             ViewBag.IsFirst = ((int)ViewBag.CurrentPage > 1);
