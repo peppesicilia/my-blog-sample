@@ -127,13 +127,14 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
         }
 
         [TestCase(1, 3)]
-        [TestCase(2, 2)]
+        [TestCase(2, 3)]
         [Category("Unit test")]
         public void should_retrieve_all_paginated_categories(int page, int pageSize)
         {
             // Arrange
 
-            var mockCategories = CategoriesHelper.GetMockDataForPages().Take(pageSize).Skip(page).ToList();
+            var recordSize = (page - 1) * pageSize;
+            var mockCategories = CategoriesHelper.GetMockDataForPages().Skip(recordSize).Take(pageSize).ToList();
 
             _categoriesRepository.GetPaginatedAll(page, pageSize).Returns(mockCategories);
 
@@ -143,8 +144,8 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
             // Assert
             Assert.IsNotNull(categories);
             Assert.IsTrue(categories.Count <= pageSize);
-
             Assert.AreEqual(categories.Count, mockCategories.Count);
+
             foreach (var tag in categories)
             {
                 Assert.IsTrue(mockCategories.Contains(tag));

@@ -144,13 +144,14 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
         }
 
         [TestCase(1, 3)]
-        [TestCase(2, 2)]
+        [TestCase(2, 3)]
         [Category("Unit test")]
         public void should_retrieve_all_paginated_tags(int page, int pageSize)
         {
             // Arrange
 
-            var mockTags = TagsHelper.GetMockDataForPages().Take(pageSize).Skip(page).ToList();
+            var recordSize = (page - 1) * pageSize;
+            var mockTags = TagsHelper.GetMockDataForPages().Skip(recordSize).Take(pageSize).ToList();
 
             _tagsRepository.GetPaginatedAll(page, pageSize).Returns(mockTags);
 
@@ -160,8 +161,8 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
             // Assert
             Assert.IsNotNull(tags);
             Assert.IsTrue(tags.Count <= pageSize);
-
             Assert.AreEqual(tags.Count, mockTags.Count);
+
             foreach (var tag in tags)
             {
                 Assert.IsTrue(mockTags.Contains(tag));

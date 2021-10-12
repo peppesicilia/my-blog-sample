@@ -49,20 +49,19 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
             _connectionFactory.GetConnection().Returns(db.OpenConnection());
 
             // Act
-            var categories = _sut.GetAll();
-            var categoriesList = categories.ToList();
+            var categories = _sut.GetAll().ToList();
 
             // Assert
             Assert.IsNotNull(categories);
             Assert.AreEqual(categories.Count(), mockCategories.Count);
 
             mockCategories = mockCategories.OrderBy(o => o.Id).ToList();
-            categoriesList = categoriesList.OrderBy(o => o.Id).ToList();
+            categories = categories.OrderBy(o => o.Id).ToList();
 
             for (var i = 0; i < mockCategories.Count; i++)
             {
                 var mockCategory = mockCategories[i];
-                var category = categoriesList[i];
+                var category = categories[i];
                 Assert.IsTrue(mockCategory.Id == category.Id);
                 Assert.IsTrue(mockCategory.Name == category.Name);
                 Assert.IsTrue(mockCategory.Description == category.Description);
@@ -171,31 +170,40 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         }
 
         [TestCase(1, 3)]
-        [TestCase(2, 2)]
+        [TestCase(2, 3)]
         [Category("Unit test")]
         public void should_retrieve_all_paginated_categories(int page, int pageSize)
         {
             // Arrange
 
-            //var mockCategoriesSize = new List<Category>(pageSize); 
-            //var mockCategories = CategoriesHelper.GetMockDataForPages().CopyTo((page-1)*pageSize, mockCategoriesSize, 0, pageSize);
-
-            //By Simone
-            var mockCategories = CategoriesHelper.GetMockDataForPages().Take(pageSize).Skip(page).ToList();
+            var mockCategories = CategoriesHelper.GetMockDataForPages().ToList();
 
             var db = new InMemoryDatabase();
             db.Insert<Category>(mockCategories);
-
             _connectionFactory.GetConnection().Returns(db.OpenConnection());
+
+            var recordSize = (page - 1) * pageSize;
+            mockCategories = mockCategories.Skip(recordSize).Take(pageSize).ToList();
 
             // Act
             var categories = _sut.GetPaginatedAll(page, pageSize).ToList();
 
             // Assert
             Assert.IsNotNull(categories);
-            //Assert.AreEqual(categories.Count(), mockCategories.Count());
             Assert.IsTrue(categories.Count() <= pageSize, "ERRORE: Il numero delle categorie è maggiore della dimensione della pagina!");
-            //Assert.IsTrue(mockCategories.Count() <= pageSize, "ERRORE: Il numero delle categorie è maggiore della dimensione della pagina!");
+            Assert.AreEqual(categories.Count, mockCategories.Count);
+
+            mockCategories = mockCategories.OrderBy(o => o.Id).ToList();
+            categories = categories.OrderBy(o => o.Id).ToList();
+
+            for (var i = 0; i < mockCategories.Count; i++)
+            {
+                var mockCategory = mockCategories[i];
+                var category = categories[i];
+                Assert.IsTrue(mockCategory.Id == category.Id);
+                Assert.IsTrue(mockCategory.Name == category.Name);
+                Assert.IsTrue(mockCategory.Description == category.Description);
+            }
         }
     }
 }

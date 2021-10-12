@@ -55,20 +55,19 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
             _connectionFactory.GetConnection().Returns(db.OpenConnection());
 
             // Act
-            var posts = _sut.GetAll();
-            var postsList = posts.ToList();
+            var posts = _sut.GetAll().ToList();
 
             // Assert
             Assert.IsNotNull(posts);
             Assert.AreEqual(posts.Count(), mockPosts.Count);
 
             mockPosts = mockPosts.OrderBy(o => o.Id).ToList();
-            postsList = postsList.OrderBy(o => o.Id).ToList();
+            posts = posts.OrderBy(o => o.Id).ToList();
 
             for (var i = 0; i < mockPosts.Count; i++)
             {
                 var mockPost = mockPosts[i];
-                var post = postsList[i];
+                var post = posts[i];
                 Assert.IsTrue(mockPost.Id == post.Id);
                 Assert.IsTrue(mockPost.Title == post.Title);
                 Assert.IsTrue(mockPost.Text == post.Text);
@@ -223,31 +222,42 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         }
 
         [TestCase(1, 3)]
-        [TestCase(2, 4)] //non funziona
+        [TestCase(2, 3)]
+        [TestCase(2, 4)]
         [Category("Unit test")]
         public void should_retrieve_all_paginated_posts(int page, int pageSize)
         {
             // Arrange
 
-            //var mockPostsSize = new List<Post>(pageSize); 
-            //var mockPosts = PostsHelper.GetMockDataForPages().CopyTo((page-1)*pageSize, mockPostsSize, 0, pageSize);
-            
-            //By Simone
-            var mockPosts = PostsHelper.GetMockDataForPages().Take(pageSize).Skip(page).ToList();
+            var mockPosts = PostsHelper.GetMockDataForPages().ToList();  
 
             var db = new InMemoryDatabase();
             db.Insert<Post>(mockPosts);
-
             _connectionFactory.GetConnection().Returns(db.OpenConnection());
+
+            var recordSize = (page - 1) * pageSize;
+            mockPosts = mockPosts.Skip(recordSize).Take(pageSize).ToList();
 
             // Act
             var posts = _sut.GetPaginatedAll(page, pageSize).ToList();
 
             // Assert
             Assert.IsNotNull(posts);
-            //Assert.AreEqual(posts.Count(), mockPosts.Count());
             Assert.IsTrue(posts.Count() <= pageSize, "ERRORE: Il numero dei post è maggiore della dimensione della pagina!");
-            //Assert.IsTrue(mockPosts.Count() <= pageSize, "ERRORE: Il numero dei post è maggiore della dimensione della pagina!");
+            Assert.AreEqual(posts.Count, mockPosts.Count);
+
+            mockPosts = mockPosts.OrderBy(o => o.Id).ToList();
+            posts = posts.OrderBy(o => o.Id).ToList();
+
+            for (var i = 0; i < mockPosts.Count; i++)
+            {
+                var mockPost = mockPosts[i];
+                var post = posts[i];
+                Assert.IsTrue(mockPost.Id == post.Id);
+                Assert.IsTrue(mockPost.Title == post.Title);
+                Assert.IsTrue(mockPost.Text == post.Text);
+                Assert.IsTrue(mockPost.Author == post.Author);
+            }
         }
     }
 }

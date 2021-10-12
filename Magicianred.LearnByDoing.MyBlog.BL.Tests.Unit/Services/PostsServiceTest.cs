@@ -170,13 +170,15 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
         }
 
         [TestCase(1, 3)]
+        [TestCase(2, 3)]
         [TestCase(2, 4)]
         [Category("Unit test")]
         public void should_retrieve_all_paginated_posts(int page, int pageSize)
         {
             // Arrange
-            
-            var mockPosts = PostsHelper.GetMockDataForPages().Take(pageSize).Skip(page).ToList();
+
+            var recordSize = (page - 1) * pageSize;
+            var mockPosts = PostsHelper.GetMockDataForPages().Skip(recordSize).Take(pageSize).ToList();
 
             _postsRepository.GetPaginatedAll(page, pageSize).Returns(mockPosts);
 
@@ -186,8 +188,8 @@ namespace Magicianred.LearnByDoing.MyBlog.BL.Tests.Unit.Services
             // Assert
             Assert.IsNotNull(posts);
             Assert.IsTrue(posts.Count <= pageSize);
-
             Assert.AreEqual(posts.Count, mockPosts.Count);
+
             foreach (var post in posts)
             {
                 Assert.IsTrue(mockPosts.Contains(post));

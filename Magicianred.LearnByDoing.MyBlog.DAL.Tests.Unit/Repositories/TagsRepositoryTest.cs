@@ -54,20 +54,19 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
             _connectionFactory.GetConnection().Returns(db.OpenConnection());
 
             // Act
-            var tags = _sut.GetAll();
-            var tagsList = tags.ToList();
+            var tags = _sut.GetAll().ToList();
 
             // Assert
             Assert.IsNotNull(tags);
             Assert.AreEqual(tags.Count(), mockTags.Count);
 
             mockTags = mockTags.OrderBy(o => o.Id).ToList();
-            tagsList = tagsList.OrderBy(o => o.Id).ToList();
+            tags = tags.OrderBy(o => o.Id).ToList();
 
             for (var i = 0; i < mockTags.Count; i++)
             {
                 var mockTag = mockTags[i];
-                var tag = tagsList[i];
+                var tag = tags[i];
                 Assert.IsTrue(mockTag.Id == tag.Id);
                 Assert.IsTrue(mockTag.Name == tag.Name);
                 Assert.IsTrue(mockTag.Description == tag.Description);
@@ -176,31 +175,40 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Tests.Unit.Repositories
         }
 
         [TestCase(1, 3)]
-        [TestCase(2, 2)]
+        [TestCase(2, 3)]
         [Category("Unit test")]
         public void should_retrieve_all_paginated_tags(int page, int pageSize)
         {
             // Arrange
-
-            //var mockTagsSize = new List<Tag>(pageSize); 
-            //var mockTags = TagsHelper.GetMockDataForPages().CopyTo((page-1)*pageSize, mockTagsSize, 0, pageSize);
-
-            //By Simone
-            var mockTags = TagsHelper.GetMockDataForPages().Take(pageSize).Skip(page).ToList();
+            
+            var mockTags = TagsHelper.GetMockDataForPages().ToList();
 
             var db = new InMemoryDatabase();
             db.Insert<Tag>(mockTags);
-
             _connectionFactory.GetConnection().Returns(db.OpenConnection());
+
+            var recordSize = (page-1)*pageSize;
+            mockTags = mockTags.Skip(recordSize).Take(pageSize).ToList();
 
             // Act
             var tags = _sut.GetPaginatedAll(page, pageSize).ToList();
 
             // Assert
             Assert.IsNotNull(tags);
-            //Assert.AreEqual(tags.Count(), mockTags.Count());
             Assert.IsTrue(tags.Count() <= pageSize, "ERRORE: Il numero dei tag è maggiore della dimensione della pagina!");
-            //Assert.IsTrue(mockTags.Count() <= pageSize, "ERRORE: Il numero dei tag è maggiore della dimensione della pagina!");
+            Assert.AreEqual(tags.Count, mockTags.Count);
+
+            mockTags = mockTags.OrderBy(o => o.Id).ToList();
+            tags = tags.OrderBy(o => o.Id).ToList();
+
+            for (var i = 0; i < mockTags.Count; i++)
+            {
+                var mockTag = mockTags[i];
+                var tag = tags[i];
+                Assert.IsTrue(mockTag.Id == tag.Id);
+                Assert.IsTrue(mockTag.Name == tag.Name);
+                Assert.IsTrue(mockTag.Description == tag.Description);
+            }
         }
     }
 }
