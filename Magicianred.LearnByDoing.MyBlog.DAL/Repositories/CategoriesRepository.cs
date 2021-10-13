@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Repositories;
 using Magicianred.LearnByDoing.MyBlog.Domain.Models;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 
 namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
@@ -11,13 +12,15 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
     public class CategoriesRepository : ICategoriesRepository
     {
         private readonly IDatabaseConnectionFactory _connectionFactory;
+        private readonly IConfiguration _configuration;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="configuration"></param>
-        public CategoriesRepository(IDatabaseConnectionFactory connectionFactory)
+        public CategoriesRepository(IDatabaseConnectionFactory connectionFactory, IConfiguration configuration)
         {
+            this._configuration = configuration;
             this._connectionFactory = connectionFactory;
         }
 
@@ -72,8 +75,18 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
             IEnumerable<Category> categories = null;
             using (var connection = _connectionFactory.GetConnection())
             {
-                categories = connection.Query<Category>("SELECT Id, Name, Description FROM Categories ORDER BY CreateDate DESC " +
+                var databaseType = _configuration.GetSection("DatabaseType").Value;
+                if (!string.IsNullOrWhiteSpace(databaseType) && databaseType.ToLower().Trim() == "mssql")
+                {
+                    categories = connection.Query<Category>(
+                            "SELECT Id, Name, Description FROM Categories ORDER BY CreateDate DESC OFFSET @offset ROWS FETCH NEXT @PageSize ROWS ONLY",
+                            new { offset = ((page - 1) * pageSize), pageSize = pageSize });
+                }
+                else
+                {
+                    categories = connection.Query<Category>("SELECT Id, Name, Description FROM Categories ORDER BY CreateDate DESC " +
                     "LIMIT @offset, @pageSize ", new { offset = ((page - 1) * pageSize), pageSize = pageSize });
+                }
             }
 
             return categories;

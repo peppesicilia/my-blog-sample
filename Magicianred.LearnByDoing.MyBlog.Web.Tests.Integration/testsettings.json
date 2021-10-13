@@ -4,3 +4,11 @@
     "myBlog": "Server=localhost;Database=blog;Uid=root;Pwd=PeppeSQL93$;"
   }
 }
+/*
+{
+  "DatabaseType": "MsSQL",
+  "ConnectionStrings": {
+    "WinAuth": "Data Source=.\\SQL2017;Initial Catalog=AjaxSamples; Integrated Security=true"
+  }
+}
+*/

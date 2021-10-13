@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using Magicianred.LearnByDoing.MyBlog.Domain.Interfaces.Repositories;
 using Magicianred.LearnByDoing.MyBlog.Domain.Models;
+using Microsoft.Extensions.Configuration;
 using System.Collections.Generic;
 
 namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
@@ -8,13 +9,15 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
     public class TagsRepository : ITagsRepository
     {
         private readonly IDatabaseConnectionFactory _connectionFactory;
+        private readonly IConfiguration _configuration;
 
         /// <summary>
         /// Constructor
         /// </summary>
         /// <param name="configuration"></param>
-        public TagsRepository(IDatabaseConnectionFactory connectionFactory)
+        public TagsRepository(IDatabaseConnectionFactory connectionFactory, IConfiguration configuration)
         {
+            this._configuration = configuration;
             this._connectionFactory = connectionFactory;
         }
 
@@ -71,8 +74,18 @@ namespace Magicianred.LearnByDoing.MyBlog.DAL.Repositories
             IEnumerable<Tag> tags = null;
             using (var connection = _connectionFactory.GetConnection())
             {
-                tags = connection.Query<Tag>("SELECT Id, Name, Description FROM Tags ORDER BY CreateDate DESC " +
+                var databaseType = _configuration.GetSection("DatabaseType").Value;
+                if (!string.IsNullOrWhiteSpace(databaseType) && databaseType.ToLower().Trim() == "mssql")
+                {
+                    tags = connection.Query<Tag>(
+                            "SELECT Id, Name, Description FROM Tags ORDER BY CreateDate DESC OFFSET @offset ROWS FETCH NEXT @PageSize ROWS ONLY",
+                            new { offset = ((page - 1) * pageSize), pageSize = pageSize });
+                }
+                else
+                {
+                    tags = connection.Query<Tag>("SELECT Id, Name, Description FROM Tags ORDER BY CreateDate DESC " +
                     "LIMIT @offset, @pageSize ", new { offset = ((page - 1) * pageSize), pageSize = pageSize });
+                }
             }
 
             return tags;
